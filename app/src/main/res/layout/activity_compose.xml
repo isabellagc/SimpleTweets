@@ -16,10 +16,11 @@
         android:layout_width="368dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="8dp">
     </EditText>
 
     <Button
@@ -27,13 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/etTweetBox"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="43dp"
-        android:text="Send"
+
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
         android:onClick="onSubmit"
+        android:text="Send"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/etTweetBox" />
 
 </android.support.constraint.ConstraintLayout>
 

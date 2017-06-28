@@ -79,26 +79,6 @@ public class TimelineActivity extends AppCompatActivity {
         populateTimeline();
     }
 
-//    //send network request to fetch the updated data
-//    public void fetchTimelineAsync(int page){
-//
-//        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
-//            public void onSuccess(JSONArray json) {
-//                // Remember to CLEAR OUT old items before appending in the new ones
-//                tweetAdapter.clear();
-//                // ...the data has come back, add new items to your adapter...
-//                tweetAdapter.addAll(...);
-//                // Now we call setRefreshing(false) to signal refresh has finished
-//                swipeContainer.setRefreshing(false);
-//            }
-//
-//            public void onFailure(Throwable e) {
-//                Log.d("TimeLineActivity", "Fetch timeline error: " + e.toString());
-//            }
-//        });
-//
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -188,7 +168,4 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

@@ -30,7 +30,6 @@ public class ComposeActivity extends AppCompatActivity {
         et = (EditText) findViewById(R.id.etTweetBox);
         client = TwitterApp.getRestClient();
         button = (Button) findViewById(R.id.bvTweetButton);
-
     }
 
     public void onSubmit(View v) {
