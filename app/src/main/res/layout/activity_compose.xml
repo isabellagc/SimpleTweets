@@ -28,13 +28,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-
         android:layout_marginRight="8dp"
         android:layout_marginTop="0dp"
         android:onClick="onSubmit"
         android:text="Send"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etTweetBox" />
+
+    <TextView
+        android:id="@+id/tvCharCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        android:text="140"
+        app:layout_constraintLeft_toLeftOf="@+id/bvTweetButton"
+        app:layout_constraintRight_toRightOf="@+id/bvTweetButton"
+        app:layout_constraintTop_toBottomOf="@+id/bvTweetButton" />
 
 </android.support.constraint.ConstraintLayout>
 
