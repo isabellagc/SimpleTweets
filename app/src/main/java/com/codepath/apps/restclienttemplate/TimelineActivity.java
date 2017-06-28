@@ -47,6 +47,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onRefresh(){
                 //code to refresh the list
+                tweetAdapter.clear();
                 populateTimeline();
                 swipeContainer.setRefreshing(false);
                 //fetchTimelineAsync(0);
@@ -80,12 +81,13 @@ public class TimelineActivity extends AppCompatActivity {
 
 //    //send network request to fetch the updated data
 //    public void fetchTimelineAsync(int page){
+//
 //        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
 //            public void onSuccess(JSONArray json) {
 //                // Remember to CLEAR OUT old items before appending in the new ones
-//                adapter.clear();
+//                tweetAdapter.clear();
 //                // ...the data has come back, add new items to your adapter...
-//                adapter.addAll(...);
+//                tweetAdapter.addAll(...);
 //                // Now we call setRefreshing(false) to signal refresh has finished
 //                swipeContainer.setRefreshing(false);
 //            }
@@ -111,9 +113,9 @@ public class TimelineActivity extends AppCompatActivity {
             case R.id.miCompose:
                 composeMessage();
                 return true;
-            case R.id.miProfile:
-                showProfileView();
-                return true;
+//            case R.id.miProfile:
+//                showProfileView();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -135,10 +137,10 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: add functionality
-    private void showProfileView(){
-
-    }
+//    //TODO: add functionality
+//    private void showProfileView(){
+//
+//    }
 
     private void populateTimeline(){
         //make network request, create anonymous class to deal withthe response of the handler
