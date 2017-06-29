@@ -108,7 +108,8 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
+        // REQUEST_CODE i
+        // s defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
             tweets.add(0, tweet);

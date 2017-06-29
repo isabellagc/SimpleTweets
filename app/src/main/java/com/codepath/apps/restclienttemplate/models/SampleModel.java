@@ -35,6 +35,7 @@ public class SampleModel extends BaseModel {
 		super();
 	}
 
+
 	// Parse model from JSON
 	public SampleModel(JSONObject object){
 		super();

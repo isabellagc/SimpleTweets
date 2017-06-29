@@ -37,4 +37,13 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
+
 </RelativeLayout>
