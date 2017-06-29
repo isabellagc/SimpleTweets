@@ -45,6 +45,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         //give viewholder reference to button on the tweet and do the retweet stuff
         //since i have the position and the id here this is the only info i need to retweet look at the API
+
+
         //populate the views according to this data
         holder.tvUserName.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
