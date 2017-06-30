@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
@@ -40,6 +41,9 @@ public class DetailsActivity extends AppCompatActivity{
         tvTweetBody.setText(tweet.user.screenName);
         tvTweetBody.setText(tweet.body);
         tvTimeStamp.setText(tweet.timeStamp);
+        tvHandle.setText(tweet.user.screenName);
+
+        Glide.with(this).load(tweet.user.profileImageIUrl).into(ivProfImage);
 
     }
 }

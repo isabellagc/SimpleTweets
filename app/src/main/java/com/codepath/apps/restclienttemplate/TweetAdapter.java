@@ -56,7 +56,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvUserName.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvTimeStamp.setText(tweet.timeStamp);
-        holder.tvNumRetweet.setText(tweet.numRetweets);
+        holder.tvNumRetweet.setText(String.valueOf(tweet.numRetweets));
+        holder.tvNumLikes.setText(String.valueOf(tweet.numLikes));
 
         Glide.with(context).load(tweet.user.profileImageIUrl).into(holder.ivProfileImage);
 
