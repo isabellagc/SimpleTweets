@@ -1,17 +1,25 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.parceler.Parcels;
 
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by icamargo on 6/26/17.
@@ -20,6 +28,7 @@ import java.util.List;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
     private List<Tweet> mTweets;
     private Context context;
+    private TwitterClient client;
 
     //pass in the Tweet array in the constructor
     public TweetAdapter(List<Tweet> tweets){
@@ -41,17 +50,55 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //get the data according to position
-        Tweet tweet = mTweets.get(position);
-
-        //give viewholder reference to button on the tweet and do the retweet stuff
-        //since i have the position and the id here this is the only info i need to retweet look at the API
-
+        final Tweet tweet = mTweets.get(position);
 
         //populate the views according to this data
         holder.tvUserName.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvTimeStamp.setText(tweet.timeStamp);
+        holder.tvNumRetweet.setText(tweet.numRetweets);
+
         Glide.with(context).load(tweet.user.profileImageIUrl).into(holder.ivProfileImage);
+
+        //give viewholder reference to button on the tweet and do the retweet stuff
+        //since i have the position and the id here this is the only info i need to retweet look at the API
+        holder.bvRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client = TwitterApp.getRestClient();
+                client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Toast.makeText(context, "retweet success", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Toast.makeText(context, "retweet failure", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        holder.bvLike.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                client = TwitterApp.getRestClient();
+                client.like(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Toast.makeText(context, "like success", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Toast.makeText(context, "Like failure", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
     }
 
     //change this to reflect the number of tweets that we have
@@ -61,13 +108,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     }
 
     //create the ViewHolder class
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView ivProfileImage;
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTimeStamp;
+        public ImageButton bvRetweet;
+        public ImageButton bvLike;
+        public TextView tvNumLikes;
+        public TextView tvNumRetweet;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
 
             //perform findViewById lookups
@@ -75,6 +126,29 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
+            bvRetweet = (ImageButton) itemView.findViewById(R.id.bvRetweet);
+            bvLike = (ImageButton) itemView.findViewById(R.id.bvLike);
+            tvNumLikes = (TextView) itemView.findViewById(R.id.tvNumLikes);
+            tvNumRetweet = (TextView) itemView.findViewById(R.id.tvNumRetweet);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //get item position
+                    int position = getAdapterPosition();
+                    //make sure the posiiton is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        //get movie at the position (class must be static)
+                        Tweet tweet = mTweets.get(position);
+                        //create the new intent for the new activity
+                        Intent intent = new Intent(context, DetailsActivity.class);
+                        //pass in the tweet as a parameter making sure that the tweet is parcelable
+                        intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                        //show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 

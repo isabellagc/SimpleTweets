@@ -72,6 +72,8 @@ public class TimelineActivity extends AppCompatActivity {
         //RecyclerView setup (layoutmanager, use adapter)
         //this refers to our current activity
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
+
+        rvTweets.addItemDecoration(new DividerItemDecoration(this));
         //set the adapter
         rvTweets.setAdapter(tweetAdapter);
 
