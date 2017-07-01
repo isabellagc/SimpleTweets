@@ -53,7 +53,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-[Walkthrough]file:///Users/icamargo/Downloads/ezgif.com-optimize.gif
+![Walkthrough](walkthrough.gif)
 
 ## Notes
 There was a lot of small work on this app of just plugging all th buttons in and figuring out where to include onclicklisteners and such. 
