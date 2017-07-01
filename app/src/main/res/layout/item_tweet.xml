@@ -72,7 +72,7 @@
         android:layout_marginRight="8dp" />
 
     <ImageButton
-        android:id="@+id/bvLike"
+        android:id="@+id/bvLikeDetails"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentBottom="true"
@@ -99,10 +99,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Retweet#"
-        app:layout_constraintRight_toLeftOf="@+id/bvLike"
+        app:layout_constraintRight_toLeftOf="@+id/bvLikeDetails"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tvBody" />
+
+    <ImageButton
+        android:id="@+id/bvReply"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:tint="@android:color/black"
+        app:layout_constraintRight_toLeftOf="@+id/bvRetweet"
+        app:layout_constraintTop_toBottomOf="@+id/tvBody"
+        app:srcCompat="@drawable/ic_compose_new" />
 
 </android.support.constraint.ConstraintLayout>
 

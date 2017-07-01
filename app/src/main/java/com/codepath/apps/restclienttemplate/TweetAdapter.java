@@ -2,6 +2,8 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,8 @@ import org.parceler.Parcels;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+
+import static com.codepath.apps.restclienttemplate.R.id.bvLikeDetails;
 
 /**
  * Created by icamargo on 6/26/17.
@@ -48,7 +52,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     //bind the values based on the position of the element
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         //get the data according to position
         final Tweet tweet = mTweets.get(position);
 
@@ -59,6 +63,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvNumRetweet.setText(String.valueOf(tweet.numRetweets));
         holder.tvNumLikes.setText(String.valueOf(tweet.numLikes));
 
+        if(tweet.liked == true){
+            holder.bvLike.setColorFilter(Color.RED);
+            holder.tvNumLikes.setTextColor(Color.RED);
+        }
+
+        if(tweet.retweeted == true){
+            holder.bvRetweet.setColorFilter(Color.GREEN);
+            holder.tvNumRetweet.setTextColor(Color.GREEN);
+        }
+
         Glide.with(context).load(tweet.user.profileImageIUrl).into(holder.ivProfileImage);
 
         //give viewholder reference to button on the tweet and do the retweet stuff
@@ -67,10 +81,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 client = TwitterApp.getRestClient();
-                client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+                client.retweet(Long.toString(tweet.uid), tweet.retweeted, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Toast.makeText(context, "retweet success", Toast.LENGTH_LONG).show();
+                        holder.bvRetweet.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+                        holder.tvNumRetweet.setTextColor(Color.GREEN);
+                        int currentRetweets = Integer.valueOf((String) holder.tvNumRetweet.getText());
+                        holder.tvNumRetweet.setText(Integer.toString(currentRetweets + 1));
+
+                        //Toast.makeText(context, "retweet success", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -82,14 +101,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         });
 
         holder.bvLike.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 client = TwitterApp.getRestClient();
-                client.like(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+                client.like(Long.toString(tweet.uid), tweet.liked, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Toast.makeText(context, "like success", Toast.LENGTH_LONG).show();
+                        holder.bvLike.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        holder.tvNumLikes.setTextColor(Color.RED);
+                        int currentLikes = Integer.valueOf((String) holder.tvNumLikes.getText());
+                        holder.tvNumLikes.setText(Integer.toString(currentLikes + 1));
+                        //holder.tvNumLikes.setText();
+                        //Toast.makeText(context, "like success", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -99,6 +122,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 });
             }
         });
+
+        //todo: implement the reply function within the composeActivity
+
+//        holder.bvReply.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //create the new intent for the new activity
+//                Intent intent = new Intent(context, ReplyActivity.class);
+//                //pass in the tweet as a parameter making sure that the tweet is parcelable
+//                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+//                //show the activity
+//                context.startActivity(intent);
+//            }
+//        });
 
     }
 
@@ -118,6 +155,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public ImageButton bvLike;
         public TextView tvNumLikes;
         public TextView tvNumRetweet;
+        //public ImageButton bvReply;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -128,9 +166,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             bvRetweet = (ImageButton) itemView.findViewById(R.id.bvRetweet);
-            bvLike = (ImageButton) itemView.findViewById(R.id.bvLike);
+            bvLike = (ImageButton) itemView.findViewById(bvLikeDetails);
             tvNumLikes = (TextView) itemView.findViewById(R.id.tvNumLikes);
             tvNumRetweet = (TextView) itemView.findViewById(R.id.tvNumRetweet);
+            //bvReply = (ImageButton) itemView.findViewById(R.id.bvReply);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
