@@ -53,7 +53,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Walkthrough](walkthrough.gif)
+![Walkthrough](app/walkthrough.gif)
 
 ## Notes
 There was a lot of small work on this app of just plugging all th buttons in and figuring out where to include onclicklisteners and such. 
@@ -65,7 +65,7 @@ There was a lot of small work on this app of just plugging all th buttons in and
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2017] [Isabella Garcia-Camargo]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
