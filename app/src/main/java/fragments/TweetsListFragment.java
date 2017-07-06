@@ -23,7 +23,12 @@ import java.util.ArrayList;
  * Created by icamargo on 7/3/17.
  */
 
-public class TweetsListFragment extends Fragment {
+public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
+    public interface  TweetSelectedListener{
+        //handle tweet selection
+        public void onTweetSelected(Tweet tweet);
+    }
+
     //fragments contain an extra lifecycle
     //adapter
     TweetAdapter tweetAdapter;
@@ -43,7 +48,7 @@ public class TweetsListFragment extends Fragment {
         tweets = new ArrayList<>();
 
         //construct adapter from the datasource
-        tweetAdapter = new TweetAdapter(tweets);
+        tweetAdapter = new TweetAdapter(tweets, this);
 
         //RecyclerView setup (layoutmanager, use adapter)
         //this refers to our current activity
@@ -57,6 +62,8 @@ public class TweetsListFragment extends Fragment {
 
         return v;
     }
+
+
 
     public void addItems(JSONArray response){
         //convert each object to a tweet and put in our list of tweets
@@ -72,6 +79,14 @@ public class TweetsListFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onItemSelected(View view, int position, String clickID) {
+        //by the position we know the position selected
+        Tweet tweet = tweets.get(position);
+        //cast the parent activity as a TweetSelectedListener which should work if they have implemented the interface
+        ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
     }
 }
 

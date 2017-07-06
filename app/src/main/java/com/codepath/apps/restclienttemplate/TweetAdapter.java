@@ -17,8 +17,6 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -33,10 +31,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     private List<Tweet> mTweets;
     private Context context;
     private TwitterClient client;
+    private TweetAdapterListener mListener;
 
+    //define an interface required by the ViewHolder
+    public interface TweetAdapterListener{
+        public void onItemSelected(View view, int position, String clickID);
+    }
+
+    //modify the constructor of the tweet adapter to take in an object that implements this interface
     //pass in the Tweet array in the constructor
-    public TweetAdapter(List<Tweet> tweets){
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener){
         mTweets = tweets;
+        mListener = listener;
     }
 
     //for each row, inflate the layout and pass into the ViewHolder class
@@ -137,6 +143,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 //            }
 //        });
 
+        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context, "hit the image", Toast.LENGTH_LONG).show();
+                    //int position = getAdapterPosition();
+                    //fire the listener callback
+                    //mListener.onItemSelected(v, position, "ID_Click");
+                Intent intent = new Intent(context, ProfileActivity.class);
+                intent.putExtra("screen_name", tweet.user.screenName);
+                intent.putExtra("id", tweet.uid);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     //change this to reflect the number of tweets that we have
@@ -171,24 +191,34 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvNumRetweet = (TextView) itemView.findViewById(R.id.tvNumRetweet);
             //bvReply = (ImageButton) itemView.findViewById(R.id.bvReply);
 
+
+            //handle row click
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //get item position
-                    int position = getAdapterPosition();
-                    //make sure the posiiton is valid, i.e. actually exists in the view
-                    if (position != RecyclerView.NO_POSITION) {
-                        //get movie at the position (class must be static)
-                        Tweet tweet = mTweets.get(position);
-                        //create the new intent for the new activity
-                        Intent intent = new Intent(context, DetailsActivity.class);
-                        //pass in the tweet as a parameter making sure that the tweet is parcelable
-                        intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                        //show the activity
-                        context.startActivity(intent);
+//                    //get item position
+//                    int position = getAdapterPosition();
+//                    //make sure the positon is valid, i.e. actually exists in the view
+//                    if (position != RecyclerView.NO_POSITION) {
+//                        //get movie at the position (class must be static)
+//                        Tweet tweet = mTweets.get(position);
+//                        //create the new intent for the new activity
+//                        Intent intent = new Intent(context, DetailsActivity.class);
+//                        //pass in the tweet as a parameter making sure that the tweet is parcelable
+//                        intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+//                        //show the activity
+//                        context.startActivity(intent);
+//                    }
+                    if (mListener != null){
+                        //get position of the row element
+                        int position = getAdapterPosition();
+                        //fire the listener callback
+                        //todo: make the "row_click" id a thing in the strings place (dont hardcode)
+                        mListener.onItemSelected(v, position, "Row_Click");
                     }
                 }
             });
+
         }
     }
 

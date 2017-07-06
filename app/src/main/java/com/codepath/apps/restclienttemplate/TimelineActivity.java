@@ -9,9 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
+
+import fragments.TweetsListFragment;
 import fragments.TweetsPagerAdapter;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
 
     private final int REQUEST_CODE = 20;
 
@@ -65,6 +70,18 @@ public class TimelineActivity extends AppCompatActivity {
         // launch the profile view
         Intent i =  new Intent(this, ProfileActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onTweetSelected(Tweet tweet) {
+        //create the new intent for the new activity
+        Intent intent = new Intent(this, DetailsActivity.class);
+        //pass in the tweet as a parameter making sure that the tweet is parcelable
+        intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+        //show the activity
+        this.startActivity(intent);
+
+        //Toast.makeText(this, tweet.body, Toast.LENGTH_LONG).show();
     }
 
 //    @Override
