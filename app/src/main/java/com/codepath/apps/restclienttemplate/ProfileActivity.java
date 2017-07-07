@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.User;
@@ -92,13 +91,13 @@ public class ProfileActivity extends AppCompatActivity {
             client.getUserInfo(userID, screenName, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Toast.makeText(ProfileActivity.this, "made the thing", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ProfileActivity.this, "made the thing", Toast.LENGTH_LONG).show();
                     User user = null;
                     try {
                         user = User.fromJson(response);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(ProfileActivity.this, "failing here", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(ProfileActivity.this, "failing here", Toast.LENGTH_LONG).show();
                     }
                     getSupportActionBar().setTitle(user.screenName);
                     //populate user headline

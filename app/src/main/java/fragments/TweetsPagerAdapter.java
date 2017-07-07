@@ -9,13 +9,17 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class TweetsPagerAdapter extends FragmentPagerAdapter {
+    HomeTimelineFragment homeTimelineFragment;
+    MentionsTimelineFragment mentionsTimelineFragment;
 
     private String tabTitles[] = new String[]{"Home", "Mentions"};
-    private Context context;
+    //private Context context;
 
     public TweetsPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.context = context;
+        homeTimelineFragment = new HomeTimelineFragment();
+        mentionsTimelineFragment = new MentionsTimelineFragment();
+        //this.context = context;
     }
 
     // return the total number of fragments there are
@@ -27,9 +31,9 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public android.support.v4.app.Fragment getItem(int position){
         if (position == 0){
-            return new HomeTimelineFragment();
+            return homeTimelineFragment;
         }else if (position == 1){
-            return new MentionsTimelineFragment();
+            return mentionsTimelineFragment;
         }else{
             return null;
         }

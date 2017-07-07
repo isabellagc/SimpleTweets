@@ -13,12 +13,15 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.parceler.Parcels;
 
+import fragments.HomeTimelineFragment;
 import fragments.TweetsListFragment;
 import fragments.TweetsPagerAdapter;
 
 public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
 
     private final int REQUEST_CODE = 20;
+    private ViewPager vpPager;
+    private TweetsPagerAdapter pagerAdapter;
 
 
     //to make the app swipe to refresh!
@@ -51,9 +54,10 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 //                android.R.color.holo_red_light);
 
         //get the view pager
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager = (ViewPager) findViewById(R.id.viewpager);
+        pagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
         //setup the adapter for the pager
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        vpPager.setAdapter(pagerAdapter);
         //setup the tab layout to use the view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
@@ -70,6 +74,11 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         // launch the profile view
         Intent i =  new Intent(this, ProfileActivity.class);
         startActivity(i);
+    }
+
+    public void onCompose(MenuItem item){
+        Intent intent = new Intent(this, ComposeActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
@@ -99,22 +108,17 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 //        }
 //    }
 
-//    private void composeMessage(){
-//        Intent intent = new Intent(this, ComposeActivity.class);
-//        startActivityForResult(intent, REQUEST_CODE);
-//    }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // REQUEST_CODE i
-//        // s defined above
-//        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-//            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
-//            tweets.add(0, tweet);
-//            tweetAdapter.notifyItemInserted(0);
-//            rvTweets.scrollToPosition(0);
-//        }
-//    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
+            HomeTimelineFragment timelineFragment = (HomeTimelineFragment) pagerAdapter.getItem(0);
+            timelineFragment.addTweet(tweet);
+        }
+    }
 
 
 

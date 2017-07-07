@@ -76,8 +76,10 @@ public class ComposeActivity extends AppCompatActivity {
                 setResult(RESULT_OK, data); // set result code and bundle data for response
                 finish(); // closes the activity, pass data to parent
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                //Log.e("composeActivity", "this is broken");
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
